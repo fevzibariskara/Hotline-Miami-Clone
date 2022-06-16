@@ -2,17 +2,23 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(Rigidbody2D))]
 public class ObjectMover : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    Rigidbody2D rigidbody;
+    [SerializeField] float maxVelocity = 5f;
+
+    private void Awake()
     {
-        
+        rigidbody = this.GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    public void MoveObject(Vector3 direction)
     {
-        
+        if (rigidbody.velocity.magnitude < maxVelocity)
+        {
+            rigidbody.AddForce(direction, ForceMode2D.Force);
+        }
     }
+
 }
