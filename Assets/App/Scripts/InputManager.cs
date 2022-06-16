@@ -10,6 +10,12 @@ public class InputManager : MonoBehaviour
     private void Awake()
     {
         toMove = this.GetComponent<ObjectMover>();
+        CameraController.Me().SetPlayerToFollow(this.transform);
+    }
+
+    private void Update()
+    {
+        MouseInput();
     }
 
     private void FixedUpdate()
@@ -42,5 +48,11 @@ public class InputManager : MonoBehaviour
         }
 
         return retVal.normalized;
+    }
+
+    void MouseInput()
+    {
+        Vector2 MouseInWorld = CameraController.Me().GetMainCamera().ScreenToWorldPoint(Input.mousePosition);
+        toMove.FacePoint(MouseInWorld);
     }
 }

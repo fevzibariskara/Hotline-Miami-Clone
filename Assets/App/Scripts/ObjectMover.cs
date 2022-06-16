@@ -21,4 +21,11 @@ public class ObjectMover : MonoBehaviour
         }
     }
 
+    public void FacePoint(Vector3 pointToFace)
+    {
+        Vector3 pos = pointToFace - this.transform.position;
+        float rotZ = Mathf.Atan2(pos.x, pos.y) * Mathf.Rad2Deg;
+        transform.rotation = Quaternion.Euler(0.0f, 0f, rotZ * -1);
+    }
+
 }
