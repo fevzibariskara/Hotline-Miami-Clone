@@ -6,7 +6,7 @@ using UnityEngine;
 public class ObjectMover : MonoBehaviour
 {
     Rigidbody2D rigidbody;
-    [SerializeField] float maxVelocity = 5f;
+    [SerializeField] float maxVelocity = 5f, acceleration = 5f;
 
     private void Awake()
     {
@@ -17,8 +17,13 @@ public class ObjectMover : MonoBehaviour
     {
         if (rigidbody.velocity.magnitude < maxVelocity)
         {
-            rigidbody.AddForce(direction, ForceMode2D.Force);
+            rigidbody.AddForce(direction * acceleration * Time.fixedDeltaTime, ForceMode2D.Force);
         }
+    }
+
+    public float GetObjectSpeed()
+    {
+        return rigidbody.velocity.magnitude;
     }
 
     public void FacePoint(Vector3 pointToFace)
