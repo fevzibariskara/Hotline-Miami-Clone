@@ -1742,9 +1742,9 @@ GameObject:
   - component: {fileID: 1968281303}
   - component: {fileID: 1968281306}
   - component: {fileID: 1968281305}
-  - component: {fileID: 1968281304}
   - component: {fileID: 1968281308}
   - component: {fileID: 1968281307}
+  - component: {fileID: 1968281304}
   m_Layer: 0
   m_Name: Person
   m_TagString: Untagged
@@ -1850,13 +1850,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 1968281300}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 532b0c486cfc8df40812afeb094e2854, type: 3}
+  m_Script: {fileID: 11500000, guid: 8b0045d1919dd6f4e9d0f683687444eb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  forwards: 119
-  backwards: 115
-  left: 97
-  right: 100
+  torso: {fileID: 1968281302}
+  l_thigh: {fileID: 1690766808}
+  l_calf: {fileID: 1262483690}
+  l_foot: {fileID: 117017696}
+  l_upperArm: {fileID: 1799296127}
+  l_foreArm: {fileID: 1755738179}
+  l_hand: {fileID: 1752814629}
+  r_thigh: {fileID: 1845892788}
+  r_calf: {fileID: 1329240319}
+  r_foot: {fileID: 406331507}
+  r_upperArm: {fileID: 1395489789}
+  r_foreArm: {fileID: 1599758855}
+  r_hand: {fileID: 482722987}
 --- !u!114 &1968281305
 MonoBehaviour:
   m_ObjectHideFlags: 0
