@@ -4,15 +4,23 @@ using UnityEngine;
 
 public class PersonInventory : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    List<Item> EquipedItems;
+
+    public void EquipItem(Item i)
     {
-        
+        if (EquipedItems == null)
+        {
+            EquipedItems = new List<Item>();
+        }
+        EquipedItems.Add(i);
     }
 
-    // Update is called once per frame
-    void Update()
+    public void RemoveItem(Item i)
     {
-        
+        if (EquipedItems.Contains(i))
+        {
+            EquipedItems.Remove(i);
+            i.UnequipItem();
+        }
     }
 }

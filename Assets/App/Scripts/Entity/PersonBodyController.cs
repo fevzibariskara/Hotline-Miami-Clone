@@ -13,11 +13,13 @@ public class PersonBodyController : MonoBehaviour
         if (!leftHand)
         {
             toParent.transform.parent = r_hand;
+            AddAttachedObject(r_hand, toParent);
         }
 
         else
         {
             toParent.transform.parent = l_hand;
+            AddAttachedObject(l_hand, toParent);
         }
     }
 
@@ -34,5 +36,17 @@ public class PersonBodyController : MonoBehaviour
         }
 
         attachedObjects[attachedTo].Add(attachee);
+    }
+
+    public void UnattachObject(GameObject attached)
+    {
+        foreach (KeyValuePair<Transform, List<GameObject>> kvp in attachedObjects)
+        {
+            if (kvp.Value.Contains(attached))
+            {
+                kvp.Value.Remove(attached);
+                return;
+            }
+        }
     }
 }

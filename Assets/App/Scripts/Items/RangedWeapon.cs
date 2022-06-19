@@ -5,15 +5,19 @@ using UnityEngine;
 public class RangedWeapon : Item
 {
     [SerializeField] WeaponHands numHands;
-    [SerializeField] 
-    public override void EquipItem()
+    [SerializeField] HandToUse hand;
+    public override void EquipItem(GameObject equipingTo)
     {
-        base.EquipItem();
+        base.EquipItem(equipingTo);
+        PersonBodyController pbc = equipingTo.GetComponent<PersonBodyController>();
+        pbc.AttachedToHand(this.gameObject);
     }
 
     public override void UnequipItem()
     {
         base.UnequipItem();
+        transform.root.GetComponent<PersonBodyController>().UnattachObject(this.gameObject);
+        transform.root.GetComponent<PersonInventory>().RemoveItem(this);
     }
 }
 
