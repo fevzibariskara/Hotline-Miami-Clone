@@ -8,18 +8,22 @@ public class PersonBodyController : MonoBehaviour
 
     Dictionary<Transform, List<GameObject>> attachedObjects;
 
-    public void AttachedToHand(GameObject toParent, bool leftHand = false)
+    public void AttachedToHand(Item toParent, bool leftHand = false)
     {
         if (!leftHand)
         {
             toParent.transform.parent = r_hand;
-            AddAttachedObject(r_hand, toParent);
+            toParent.transform.localPosition = Vector3.zero + toParent.GetHandPosOffset();
+            toParent.transform.localRotation = Quaternion.Euler(Vector3.zero + toParent.GetHandRotOffset());
+            AddAttachedObject(r_hand, toParent.gameObject);
         }
 
         else
         {
             toParent.transform.parent = l_hand;
-            AddAttachedObject(l_hand, toParent);
+            toParent.transform.localPosition = Vector3.zero;
+            toParent.transform.localRotation = Quaternion.Euler(0, 0, 0);
+            AddAttachedObject(l_hand, toParent.gameObject);
         }
     }
 

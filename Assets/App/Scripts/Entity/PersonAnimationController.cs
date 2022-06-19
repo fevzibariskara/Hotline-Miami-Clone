@@ -17,4 +17,9 @@ public class PersonAnimationController : MonoBehaviour
     {
         myAnimator.SetFloat("MoveSpeed", objectMover.GetObjectSpeed() - 0.1f);
     }
+
+    public void SetPersonArmed(bool val)
+    {
+        myAnimator.SetBool("IsArmed", val);
+    }
 }

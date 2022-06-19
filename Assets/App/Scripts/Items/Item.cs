@@ -5,8 +5,12 @@ using UnityEngine;
 public class Item : MonoBehaviour
 {
     [SerializeField] string ItemName;
+
     [SerializeField] Sprite unequiped, equiped;
     [SerializeField] int unequipedSortingOrder, equipedSortingOrder;
+
+    [SerializeField] Vector3 HandPosOffset, HandRotOffset;
+
     SpriteRenderer sr;
 
     private void Awake()
@@ -19,6 +23,7 @@ public class Item : MonoBehaviour
         sr.sprite = equiped;
         equipingTo.GetComponent<PersonInventory>().EquipItem(this);
         sr.sortingOrder = equipedSortingOrder;
+        ItemManager.Me().RemoveItemFromWorld(this);
     }
 
     public virtual void UnequipItem()
@@ -26,5 +31,16 @@ public class Item : MonoBehaviour
         sr.sprite = unequiped;
         this.transform.parent = null;
         sr.sortingOrder = unequipedSortingOrder;
+        ItemManager.Me().AddItemToWorld(this);
+    }
+
+    public Vector3 GetHandPosOffset()
+    {
+        return HandPosOffset;
+    }
+
+    public Vector3 GetHandRotOffset()
+    {
+        return HandRotOffset;
     }
 }

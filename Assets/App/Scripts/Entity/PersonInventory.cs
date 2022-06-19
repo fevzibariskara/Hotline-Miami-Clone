@@ -23,4 +23,9 @@ public class PersonInventory : MonoBehaviour
             i.UnequipItem();
         }
     }
+
+    public List<Item> GetAllItems()
+    {
+        return EquipedItems;
+    }
 }

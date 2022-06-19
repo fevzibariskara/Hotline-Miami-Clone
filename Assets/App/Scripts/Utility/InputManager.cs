@@ -5,17 +5,22 @@ using UnityEngine;
 public class InputManager : MonoBehaviour
 {
     [SerializeField] KeyCode forwards, backwards, left, right;
+
     ObjectMover toMove;
+    PersonInventory playerInv;
 
     private void Awake()
     {
         toMove = this.GetComponent<ObjectMover>();
         CameraController.Me().SetPlayerToFollow(this.transform);
+        playerInv = this.GetComponent<PersonInventory>();
     }
 
     private void Update()
     {
         MouseInput();
+        PickupItem();
+        DropItem();
     }
 
     private void FixedUpdate()
@@ -48,6 +53,36 @@ public class InputManager : MonoBehaviour
         }
 
         return retVal.normalized;
+    }
+
+    void PickupItem()
+    {
+        for (int x = 0; x < ItemManager.Me().GetItemsInWorld().Count; x++)
+        {
+            if (Vector2.Distance(this.transform.position, ItemManager.Me().GetItemsInWorld()[x].transform.position) < 2f)
+            {
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    ItemManager.Me().GetItemsInWorld()[x].EquipItem(this.gameObject);
+                }
+            }
+        }
+    }
+
+    void DropItem()
+    {
+        if (playerInv.GetAllItems() == null)
+        {
+            return;
+        }
+
+        if (Input.GetKeyDown(KeyCode.Q))
+        {
+            for (int x = 0; x < playerInv.GetAllItems().Count; x++)
+            {
+                playerInv.GetAllItems()[x].UnequipItem();
+            }
+        }
     }
 
     void MouseInput()

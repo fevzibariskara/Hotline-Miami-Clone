@@ -100,5 +100,7 @@ MonoBehaviour:
   equiped: {fileID: -4254059877319897387, guid: 1104347712741ae459197322ff577562, type: 3}
   unequipedSortingOrder: 0
   equipedSortingOrder: 6
+  HandPosOffset: {x: 0, y: 0, z: 0}
+  HandRotOffset: {x: 0, y: 0, z: 90}
   numHands: 1
   hand: 1

@@ -10,14 +10,16 @@ public class RangedWeapon : Item
     {
         base.EquipItem(equipingTo);
         PersonBodyController pbc = equipingTo.GetComponent<PersonBodyController>();
-        pbc.AttachedToHand(this.gameObject);
+        pbc.AttachedToHand(this);
+        equipingTo.GetComponent<PersonAnimationController>().SetPersonArmed(true);
     }
 
     public override void UnequipItem()
     {
-        base.UnequipItem();
         transform.root.GetComponent<PersonBodyController>().UnattachObject(this.gameObject);
+        transform.root.GetComponent<PersonAnimationController>().SetPersonArmed(false);
         transform.root.GetComponent<PersonInventory>().RemoveItem(this);
+        base.UnequipItem();        
     }
 }
 
