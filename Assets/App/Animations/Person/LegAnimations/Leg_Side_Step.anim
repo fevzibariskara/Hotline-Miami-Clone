@@ -6,7 +6,7 @@ AnimationClip:
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
-  m_Name: Leg_SideStep
+  m_Name: Leg_Side_Step
   serializedVersion: 6
   m_Legacy: 0
   m_Compressed: 0
