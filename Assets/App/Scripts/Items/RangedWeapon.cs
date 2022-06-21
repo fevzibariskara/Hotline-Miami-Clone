@@ -6,6 +6,12 @@ public class RangedWeapon : Item
 {
     [SerializeField] WeaponHands numHands;
     [SerializeField] HandToUse hand;
+
+    [SerializeField] Transform bulletSpawn;
+    [SerializeField] GameObject projectile;
+
+    [SerializeField] float fireRate, fireTimer;
+    [SerializeField] int magazineCapacity, currentAmmo;
     public override void EquipItem(GameObject equipingTo)
     {
         base.EquipItem(equipingTo);
@@ -20,6 +26,17 @@ public class RangedWeapon : Item
         transform.root.GetComponent<PersonAnimationController>().SetPersonArmed(false);
         transform.root.GetComponent<PersonInventory>().RemoveItem(this);
         base.UnequipItem();        
+    }
+
+    public void FireWeapon()
+    {
+        fireTimer -= DeltaTimeManager.GetGameplayDelta();
+
+        if (fireTimer <= 0)
+        {
+            Instantiate(projectile, bulletSpawn.position, bulletSpawn.rotation);
+            fireTimer = fireRate;
+        }
     }
 }
 

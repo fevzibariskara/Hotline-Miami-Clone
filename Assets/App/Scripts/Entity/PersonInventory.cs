@@ -13,6 +13,11 @@ public class PersonInventory : MonoBehaviour
             EquipedItems = new List<Item>();
         }
         EquipedItems.Add(i);
+
+        if (i.GetComponent<RangedWeapon>())
+        {
+            this.GetComponent<PersonWeaponController>().curRangedWeapon = (RangedWeapon)i;
+        }
     }
 
     public void RemoveItem(Item i)

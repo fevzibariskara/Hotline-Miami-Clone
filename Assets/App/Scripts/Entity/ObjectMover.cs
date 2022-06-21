@@ -19,7 +19,10 @@ public class ObjectMover : MonoBehaviour
     {
         if (rigidbody.velocity.magnitude < maxVelocity)
         {
-            pac.SetMovementDirection(new Vector2(direction.x, direction.y));
+            if (pac != null)
+            {
+                pac.SetMovementDirection(new Vector2(direction.x, direction.y));
+            }
             rigidbody.AddForce(direction * acceleration * Time.fixedDeltaTime, ForceMode2D.Force);
         }
     }

@@ -8,12 +8,14 @@ public class InputManager : MonoBehaviour
 
     ObjectMover toMove;
     PersonInventory playerInv;
+    PersonWeaponController weaponController;
 
     private void Awake()
     {
         toMove = this.GetComponent<ObjectMover>();
         CameraController.Me().SetPlayerToFollow(this.transform);
         playerInv = this.GetComponent<PersonInventory>();
+        weaponController = this.GetComponent<PersonWeaponController>();
     }
 
     private void Update()
@@ -21,6 +23,7 @@ public class InputManager : MonoBehaviour
         MouseInput();
         PickupItem();
         DropItem();
+        Attack();
     }
 
     private void FixedUpdate()
@@ -53,6 +56,14 @@ public class InputManager : MonoBehaviour
         }
 
         return retVal.normalized;
+    }
+
+    void Attack()
+    {
+        if (Input.GetMouseButton(0))
+        {
+            weaponController.FireRangedWeapon();
+        }
     }
 
     void PickupItem()
