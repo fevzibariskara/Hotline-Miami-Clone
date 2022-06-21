@@ -6,10 +6,12 @@ using UnityEngine;
 public class ObjectMover : MonoBehaviour
 {
     Rigidbody2D rigidbody;
+    PersonAnimationController pac;
     [SerializeField] float maxVelocity = 5f, acceleration = 5f;
 
     private void Awake()
     {
+        pac = this.GetComponent<PersonAnimationController>();
         rigidbody = this.GetComponent<Rigidbody2D>();
     }
 
@@ -17,6 +19,7 @@ public class ObjectMover : MonoBehaviour
     {
         if (rigidbody.velocity.magnitude < maxVelocity)
         {
+            pac.SetMovementDirection(new Vector2(direction.x, direction.y));
             rigidbody.AddForce(direction * acceleration * Time.fixedDeltaTime, ForceMode2D.Force);
         }
     }

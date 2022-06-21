@@ -22,4 +22,10 @@ public class PersonAnimationController : MonoBehaviour
     {
         myAnimator.SetBool("IsArmed", val);
     }
+
+    public void SetMovementDirection(Vector2 val)
+    {
+        myAnimator.SetFloat("MoveDirX", val.x);
+        myAnimator.SetFloat("MoveDirY", val.y);
+    }
 }
