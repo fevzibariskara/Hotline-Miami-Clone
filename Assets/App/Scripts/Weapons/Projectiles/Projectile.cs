@@ -5,15 +5,27 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     ObjectMover mover;
+    [SerializeField] float maxLifeTime = 30f;
+    float timer = 0f;
 
     private void Awake()
     {
         mover = this.GetComponent<ObjectMover>();
     }
 
-    private void FixedUpdate()
+    private void Update()
     {
-        mover.MoveObject(new Vector3(0, 1, 0));
+        timer += DeltaTimeManager.GetGameplayDelta();
+
+        if (timer > maxLifeTime)
+        {
+            Destroy(this.gameObject);
+        }
+    }
+
+    private void FixedUpdate()
+    {        
+        mover.MoveObject(transform.up, true);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

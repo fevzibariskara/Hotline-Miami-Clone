@@ -15,7 +15,7 @@ public class ObjectMover : MonoBehaviour
         rigidbody = this.GetComponent<Rigidbody2D>();
     }
 
-    public void MoveObject(Vector3 direction)
+    public void MoveObject(Vector3 direction, bool forceMaxVelocity = false, bool localSpace = false)
     {
         if (rigidbody.velocity.magnitude < maxVelocity)
         {
@@ -24,6 +24,11 @@ public class ObjectMover : MonoBehaviour
                 pac.SetMovementDirection(new Vector2(direction.x, direction.y));
             }
             rigidbody.AddForce(direction * acceleration * Time.fixedDeltaTime, ForceMode2D.Force);
+
+            if (forceMaxVelocity)
+            {
+                rigidbody.AddForce(direction * maxVelocity, ForceMode2D.Force);
+            }
         }
     }
 
