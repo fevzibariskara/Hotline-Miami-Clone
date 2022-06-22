@@ -15,6 +15,12 @@ public class ObjectMover : MonoBehaviour
         rigidbody = this.GetComponent<Rigidbody2D>();
     }
 
+    public void MoveObjectTowardsPoint(Vector3 point, bool forceMaxVelocity = false, bool localSpace = false)
+    {
+        Vector3 dir = point - this.transform.position;
+        MoveObject(dir.normalized, forceMaxVelocity, localSpace);
+    }
+
     public void MoveObject(Vector3 direction, bool forceMaxVelocity = false, bool localSpace = false)
     {
         if (rigidbody.velocity.magnitude < maxVelocity)
