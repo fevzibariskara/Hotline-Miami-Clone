@@ -10,6 +10,8 @@ public class EnemyBehaviourTree : MonoBehaviour
 
     private void Awake()
     {
+        OnNeutral.SetEntityPerforming(transform.root.gameObject);
+        OnAttacked.SetEntityPerforming(transform.root.gameObject);
         this.GetComponent<EntityActionController>().OnAttacked += SwitchToAttacked;
     }
 
