@@ -4,15 +4,18 @@ using UnityEngine;
 
 public class EnemyBehaviourTree : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    public EntityBehaviour CurrentBehaviour;
+
+    [SerializeField] EntityBehaviour OnNeutral, OnAttacked;
+
+    private void Awake()
     {
-        
+        this.GetComponent<EntityActionController>().OnAttacked += SwitchToAttacked;
     }
 
-    // Update is called once per frame
-    void Update()
+    void SwitchToAttacked(GameObject attackedBy)
     {
-        
+        CurrentBehaviour = OnAttacked;
+        CurrentBehaviour.PassInVector3(attackedBy.transform.position);
     }
 }

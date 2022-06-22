@@ -30,4 +30,14 @@ public class EntityBehaviour : MonoBehaviour
     {
         return false;
     }
+
+    public virtual void PassInVector3(Vector3 position)
+    {
+
+    }
+
+    public void PassInGameObject(GameObject g)
+    {
+
+    }
 }
