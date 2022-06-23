@@ -5,7 +5,9 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     ObjectMover mover;
-    [SerializeField] float maxLifeTime = 30f;
+    [SerializeField] float maxLifeTime = 30f, damage;
+    [SerializeField] GameObject creator;
+
     float timer = 0f;
 
     private void Awake()
@@ -23,6 +25,11 @@ public class Projectile : MonoBehaviour
         }
     }
 
+    public void SetCreator(GameObject g)
+    {
+        creator = g;
+    }
+
     private void FixedUpdate()
     {        
         mover.MoveObject(transform.up, true);
@@ -31,6 +38,15 @@ public class Projectile : MonoBehaviour
     private void OnCollisionEnter2D(Collision2D collision)
     {
         Debug.Log("Ping!");
+
+        EntityActionController eac = collision.collider.transform.root.GetComponent<EntityActionController>();
+
+        if (eac != null)
+        {
+            eac.OnAttacked?.Invoke(creator);
+            eac.OnDealDamage?.Invoke(damage);
+        }
+
         Destroy(this.gameObject);
     }
 }

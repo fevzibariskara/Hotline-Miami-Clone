@@ -34,7 +34,8 @@ public class RangedWeapon : Item
 
         if (fireTimer <= 0)
         {
-            Instantiate(projectile, bulletSpawn.position, bulletSpawn.rotation);
+            GameObject created = Instantiate(projectile, bulletSpawn.position, bulletSpawn.rotation);
+            created.GetComponent<Projectile>().SetCreator(transform.root.gameObject);
             fireTimer = fireRate;
         }
     }

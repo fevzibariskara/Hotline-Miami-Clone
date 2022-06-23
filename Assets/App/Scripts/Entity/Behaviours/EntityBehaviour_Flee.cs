@@ -7,7 +7,9 @@ public class EntityBehaviour_Flee : EntityBehaviour
     [SerializeField] List<Transform> pointsToFleeTo;
 
     ObjectMover toMove;
+
     Vector3 attackerPosition;
+    Vector3 toGoTo;
 
     public override bool CanBehaviourBePerformed()
     {
@@ -19,6 +21,11 @@ public class EntityBehaviour_Flee : EntityBehaviour
         return false;
     }
 
+    bool AreWeAtPoint()
+    {
+        return Vector2.Distance(this.transform.position, toGoTo) < 1.5f;
+    }
+
     public override void PerformBehaviour()
     {
         if (toMove == null)
@@ -26,7 +33,12 @@ public class EntityBehaviour_Flee : EntityBehaviour
             toMove = GetEntityPerforming().GetComponent<ObjectMover>();
         }
 
-        toMove.MoveObjectTowardsPoint(GetFurthestFromAttacker(attackerPosition));
+        toGoTo = GetFurthestFromAttacker(attackerPosition);
+        if (!AreWeAtPoint())
+        {
+            toMove.MoveObjectTowardsPoint(toGoTo);
+        }
+        toMove.FacePoint(toGoTo);
     }
 
     public override void PassInVector3(Vector3 position)
