@@ -5,10 +5,28 @@ using UnityEngine;
 public class EntityBehaviour_GrabWeapon : EntityBehaviour
 {
     int weaponFound = -1;
+
     ObjectMover toMove;
+    EntityMemory em;
 
     public override bool CanBehaviourBePerformed()
     {
+        if (em == null)
+        {
+            em = transform.root.GetComponent<EntityMemory>();
+        }
+
+        object armed = em.GetMemory("Armed");
+
+        if (armed != null)
+        {
+            bool b = (bool)armed;
+            if (b)
+            {
+                return false;
+            }
+        }
+
         weaponFound = ItemManager.Me().IsWeaponAvailable();
 
         if (weaponFound == -1)
@@ -26,7 +44,8 @@ public class EntityBehaviour_GrabWeapon : EntityBehaviour
         if (Vector2.Distance(this.transform.position, ItemManager.Me().ItemsInWorld[weaponFound].transform.position) < 2)
         {
             //do pickup logic
-            transform.root.GetComponent<EntityActionController>().OnItemPickedUp.Invoke(ItemManager.Me().ItemsInWorld[weaponFound]);
+            ItemManager.Me().ItemsInWorld[weaponFound].EquipItem(transform.root.gameObject);
+            //transform.root.GetComponent<EntityActionController>().OnItemPickedUp.Invoke(ItemManager.Me().ItemsInWorld[weaponFound]);
             return true;
         }
         else
@@ -45,6 +64,8 @@ public class EntityBehaviour_GrabWeapon : EntityBehaviour
             }
             toMove.FacePoint(ItemManager.Me().ItemsInWorld[weaponFound].transform.position);
             toMove.MoveObjectTowardsPoint(ItemManager.Me().ItemsInWorld[weaponFound].transform.position);
+
+            IsBehaviourDone();
         }
     }
 

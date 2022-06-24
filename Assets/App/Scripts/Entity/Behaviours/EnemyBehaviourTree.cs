@@ -8,6 +8,8 @@ public class EnemyBehaviourTree : MonoBehaviour
 
     [SerializeField] EntityBehaviour Patrol, Flee, GrabWeapon, AttackPlayer, SearchForPlayer;
 
+    int currentStage = 0;
+
     private void Awake()
     {
         Patrol.SetEntityPerforming(transform.root.gameObject);
@@ -29,10 +31,27 @@ public class EnemyBehaviourTree : MonoBehaviour
         }
     }
 
+    void Stage2()
+    {
+
+    }
+
     private void Update()
     {
-        Stage1();
+        PerformStage();
         CurrentBehaviour.PerformBehaviour();
+    }
+
+    void PerformStage()
+    {
+        if (currentStage == 0)
+        {
+            Stage1();
+        }
+        else if (currentStage == 1)
+        {
+            Stage2();
+        }
     }
 
     void SwitchToAttacked(GameObject attackedBy)

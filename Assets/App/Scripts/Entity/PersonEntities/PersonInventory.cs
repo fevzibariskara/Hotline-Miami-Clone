@@ -22,6 +22,7 @@ public class PersonInventory : MonoBehaviour
 
         if (i.GetComponent<RangedWeapon>())
         {
+            this.GetComponent<EntityMemory>().AddMemory("Armed", true);
             this.GetComponent<PersonWeaponController>().curRangedWeapon = (RangedWeapon)i;
         }
     }
