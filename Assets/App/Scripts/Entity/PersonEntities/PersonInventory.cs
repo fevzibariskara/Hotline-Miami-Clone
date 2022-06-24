@@ -6,6 +6,12 @@ public class PersonInventory : MonoBehaviour
 {
     List<Item> EquipedItems;
 
+    private void Awake()
+    {
+        EntityActionController eac = this.GetComponent<EntityActionController>();
+        eac.OnItemPickedUp += EquipItem;
+    }
+
     public void EquipItem(Item i)
     {
         if (EquipedItems == null)

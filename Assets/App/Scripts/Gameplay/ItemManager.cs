@@ -38,4 +38,21 @@ public class ItemManager : MonoBehaviour
             ItemsInWorld.Remove(i);
         }
     }
+
+    public int IsWeaponAvailable()
+    {
+        for (int x = 0; x < ItemsInWorld.Count; x++)
+        {
+            if (IsItemWeapon(ItemsInWorld[x]))
+            {
+                return x;
+            }
+        }
+        return -1;
+    }
+
+    bool IsItemWeapon(Item i)
+    {
+        return i.GetComponent<RangedWeapon>() != null;
+    }
 }
