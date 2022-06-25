@@ -56,7 +56,7 @@ public class EntityBehaviour_GrabWeapon : EntityBehaviour
 
     public override void PerformBehaviour()
     {
-        if (weaponFound == -1)
+        if (weaponFound != -1)
         {
             if (toMove == null)
             {

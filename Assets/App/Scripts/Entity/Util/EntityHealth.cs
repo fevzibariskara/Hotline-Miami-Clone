@@ -8,7 +8,14 @@ public class EntityHealth : MonoBehaviour
 
     private void Awake()
     {
+        this.GetComponent<EntityActionController>().OnAttacked += SetAttackedMemory;
         this.GetComponent<EntityActionController>().OnDealDamage += ReduceHealth;
+    }
+
+    void SetAttackedMemory(GameObject attackedBy)
+    {
+        this.GetComponent<EntityMemory>().AddMemory("Attacker", attackedBy);
+        this.GetComponent<EntityMemory>().AddMemory("AttackerLastPosition", attackedBy.transform.position);
     }
 
     public void ReduceHealth(float val)
@@ -23,11 +30,16 @@ public class EntityHealth : MonoBehaviour
 
     public void IncreaseHealth(float val)
     {
-        currentHealth = val;
+        currentHealth += val;
 
         if (currentHealth < maxHealth)
         {
             currentHealth = maxHealth;
         }
+    }
+
+    public bool IsDead()
+    {
+        return currentHealth <= 0;
     }
 }
