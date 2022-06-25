@@ -9,6 +9,7 @@ public class InputManager : MonoBehaviour
     ObjectMover toMove;
     PersonInventory playerInv;
     PersonWeaponController weaponController;
+    EntityActionController eac;
 
     private void Awake()
     {
@@ -16,6 +17,7 @@ public class InputManager : MonoBehaviour
         CameraController.Me().SetPlayerToFollow(this.transform);
         playerInv = this.GetComponent<PersonInventory>();
         weaponController = this.GetComponent<PersonWeaponController>();
+        eac = this.GetComponent<EntityActionController>();
     }
 
     private void Update()
@@ -62,7 +64,7 @@ public class InputManager : MonoBehaviour
     {
         if (Input.GetMouseButton(0))
         {
-            weaponController.FireRangedWeapon();
+            eac.OnAttack?.Invoke();
         }
     }
 

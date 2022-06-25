@@ -15,6 +15,7 @@ public class EnemyBehaviourTree : MonoBehaviour
         Patrol.SetEntityPerforming(transform.root.gameObject);
         Flee.SetEntityPerforming(transform.root.gameObject);
         GrabWeapon.SetEntityPerforming(transform.root.gameObject);
+        AttackPlayer.SetEntityPerforming(transform.root.gameObject);
 
         transform.root.GetComponent<EntityActionController>().OnAttacked += SwitchToAttacked;
     }
@@ -33,7 +34,14 @@ public class EnemyBehaviourTree : MonoBehaviour
 
     void Stage2()
     {
-
+        if (AttackPlayer.CanBehaviourBePerformed())
+        {
+            CurrentBehaviour = AttackPlayer;
+        }
+        else
+        {
+            CurrentBehaviour = Patrol;
+        }
     }
 
     private void Update()
@@ -56,6 +64,6 @@ public class EnemyBehaviourTree : MonoBehaviour
 
     void SwitchToAttacked(GameObject attackedBy)
     {
-        CurrentBehaviour.PassInVector3(attackedBy.transform.position);
+        currentStage = 1;
     }
 }

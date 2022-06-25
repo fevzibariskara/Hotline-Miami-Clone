@@ -14,6 +14,7 @@ public class EntityHealth : MonoBehaviour
 
     void SetAttackedMemory(GameObject attackedBy)
     {
+        Debug.Log("ATTACKED BY " + attackedBy.gameObject.name);
         this.GetComponent<EntityMemory>().AddMemory("Attacker", attackedBy);
         this.GetComponent<EntityMemory>().AddMemory("AttackerLastPosition", attackedBy.transform.position);
     }

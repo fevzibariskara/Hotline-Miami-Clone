@@ -9,4 +9,5 @@ public class EntityActionController : MonoBehaviour
     public Action<Item> OnItemPickedUp, OnItemEquiped;
     public Action<Vector3> OnMove;
     public Action<float> OnDealDamage;
+    public Action OnAttack;
 }
