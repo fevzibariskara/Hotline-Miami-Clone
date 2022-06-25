@@ -39,4 +39,17 @@ public class EntityMemory : MonoBehaviour
             return null;
         }
     }
+
+    public void RemoveMemory(string key)
+    {
+        if (Memory == null)
+        {
+            return;
+        }
+
+        if (Memory.ContainsKey(key))
+        {
+            Memory.Remove(key);
+        }
+    }
 }

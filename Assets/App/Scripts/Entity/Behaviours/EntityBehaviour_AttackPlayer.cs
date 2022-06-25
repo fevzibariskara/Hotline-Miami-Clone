@@ -30,7 +30,10 @@ public class EntityBehaviour_AttackPlayer : EntityBehaviour
 
         if (CanAttackerBeSeen())
         {
-            return true;
+            if (IsInAttackRange())
+            {
+                return true;
+            }
         }        
 
         return false;

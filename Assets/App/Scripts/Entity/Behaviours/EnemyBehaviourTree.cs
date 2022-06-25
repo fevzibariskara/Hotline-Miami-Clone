@@ -16,6 +16,7 @@ public class EnemyBehaviourTree : MonoBehaviour
         Flee.SetEntityPerforming(transform.root.gameObject);
         GrabWeapon.SetEntityPerforming(transform.root.gameObject);
         AttackPlayer.SetEntityPerforming(transform.root.gameObject);
+        SearchForPlayer.SetEntityPerforming(transform.root.gameObject);
 
         transform.root.GetComponent<EntityActionController>().OnAttacked += SwitchToAttacked;
     }
@@ -38,6 +39,11 @@ public class EnemyBehaviourTree : MonoBehaviour
         {
             CurrentBehaviour = AttackPlayer;
         }
+        else if (SearchForPlayer.CanBehaviourBePerformed())
+        {
+            CurrentBehaviour = SearchForPlayer;
+        }
+        
         else
         {
             CurrentBehaviour = Patrol;
