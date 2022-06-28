@@ -2,25 +2,30 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+//reference : https://github.com/davecusatis/A-Star-Sharp/blob/master/Astar.cs
+
 public class PathfindingManager
 {
     static PathfindingManager me;
+    [SerializeField] int NumberOfThreads = 3;
+    Dictionary<int, Dictionary<int, NodeList>> allNodes;
+    GameObject DebugParent;
 
     public static PathfindingManager Me()
     {
         if (me == null)
         {
             me = new PathfindingManager();
+            me.Init();
         }
         return me;
     }
 
-    [SerializeField] int NumberOfThreads = 3;
-    Dictionary<int, Dictionary<int,NodeList>> allNodes;
 
     public void Init()
     {
         allNodes = new Dictionary<int, Dictionary<int, NodeList>>();
+        GenerateGrid();
     }
 
     void GenerateNode(Vector3 position)
@@ -34,6 +39,8 @@ public class PathfindingManager
 
         pn.neighbours = new List<PathfindingNode>();
         pn.parents = new PathfindingNode[NumberOfThreads];
+
+        AddToAllNodes(coordPos.x, coordPos.y, pn);
     }
 
     void AddToAllNodes(int x, int y, PathfindingNode pn)
@@ -52,8 +59,46 @@ public class PathfindingManager
 
     void GenerateGrid()
     {
-
+        for (float x = -50f; x < 0f; x += .5f)
+        {
+            for (float y = -50f; y < 0f; y += .5f)
+            {
+                GenerateNode(new Vector3(x, y, 0));
+            }
+        }
     }
+
+    public void GenerateDebugDisplay()
+    {
+        if (DebugParent != null)
+        {
+            GameObject.Destroy(DebugParent);
+        }
+        DebugParent = new GameObject();
+
+        foreach (KeyValuePair<int, Dictionary<int, NodeList>> kvp in allNodes)
+        {
+            foreach (KeyValuePair<int, NodeList> vals in kvp.Value)
+            {
+                for (int x = 0; x < vals.Value.GetNodes().Count; x++)
+                {
+                    GenerateDebugCube(vals.Value.GetNodes()[x]);
+                }
+            }
+        }
+    }
+
+    void GenerateDebugCube(PathfindingNode pn)
+    {
+        GameObject g = GameObject.CreatePrimitive(PrimitiveType.Cube);
+
+        g.transform.position = pn.Position;
+        g.transform.localScale = new Vector3(.25f, .25f, .25f);
+        g.transform.parent = DebugParent.transform;
+
+        g.name = "NODE " + pn.Position;
+    }
+
 }
 
 public class PathfindingNode
@@ -67,27 +112,30 @@ public class PathfindingNode
 
 class NodeList
 {
-    Dictionary<int, List<PathfindingNode>> nodes;
+    List<PathfindingNode> nodes;
     int yCoordinate;
 
     public NodeList(int yCoord)
     {
-        nodes = new Dictionary<int, List<PathfindingNode>>();
-        nodes.Add(yCoord, new List<PathfindingNode>());
-        yCoordinate = yCoord;
+        nodes = new List<PathfindingNode>();
     }
 
     public void AddNode(PathfindingNode pn)
     {
-        nodes[yCoordinate].Add(pn);
+        nodes.Add(pn);
     }
 
     public void RemoveNode(PathfindingNode pn)
     {
-        if (nodes[yCoordinate].Contains(pn))
+        if (nodes.Contains(pn))
         {
-            nodes[yCoordinate].Remove(pn);
+            nodes.Remove(pn);
         }
+    }
+
+    public List<PathfindingNode> GetNodes()
+    {
+        return nodes;
     }
 
 }
