@@ -5,9 +5,11 @@ using System.Linq;
 
 public class PathFinder
 {
-    public List<PathfindingNode> GetPath(PathfindingNode start, PathfindingNode end)
+    public List<PathfindingNode> path = new List<PathfindingNode>();
+
+    public void GetPath(PathfindingNode start, PathfindingNode end)
     {
-        List<PathfindingNode> path = new List<PathfindingNode>();
+        path = new List<PathfindingNode>();
         HashSet<PathfindingNode> closedSet = new HashSet<PathfindingNode>();
         List<PathfindingNode> openSet = new List<PathfindingNode>();
         PathfindingNode current = null;
@@ -22,6 +24,7 @@ public class PathFinder
 
             for (int x = 0; x < current.neighbours.Count; x++)
             {
+
                 if (current.neighbours[x].walkable)
                 {
                     current.neighbours[x].parents[0] = current;
@@ -36,6 +39,20 @@ public class PathFinder
             }
         }
 
-        return path;
+        if (current == end)
+        {
+            //successful path
+            while (current != start)
+            {
+                path.Add(current);
+                current = current.parents[0];
+            }
+            path.Reverse();
+        }
+        else
+        {
+            //no path
+            path = null;
+        }
     }
 }
