@@ -196,9 +196,17 @@ public class PathfindingNode
 {
     public Vector3 Position;
     public List<PathfindingNode> neighbours;
-    public float gCost, fCost, weight;
+    public int gCost, hCost, weight;
     public PathfindingNode[] parents;
     public bool walkable;
+
+    public int fCost
+    {
+        get
+        {
+            return gCost + hCost;
+        }
+    }
 }
 
 class NodeList

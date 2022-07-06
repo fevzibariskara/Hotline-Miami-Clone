@@ -10,31 +10,54 @@ public class PathFinder
     public void GetPath(PathfindingNode start, PathfindingNode end)
     {
         path = new List<PathfindingNode>();
+
         HashSet<PathfindingNode> closedSet = new HashSet<PathfindingNode>();
         List<PathfindingNode> openSet = new List<PathfindingNode>();
         PathfindingNode current = null;
 
         openSet.Add(start);
 
-        while (openSet.Count > 0 && current != end)
+        while (openSet.Count > 0)
         {
             current = openSet[0];
-            openSet.RemoveAt(0);
+
+            for (int i = 1; i < openSet.Count; i++)
+            {
+                if (openSet[i].fCost <= current.fCost)
+                {
+                    if (openSet[i].hCost < current.hCost)
+                    {
+                        current = openSet[i];
+                    }
+                }
+            }
+            openSet.Remove(current);
             closedSet.Add(current);
+
+            if (current == end)
+            {
+                break;
+            }
 
             for (int x = 0; x < current.neighbours.Count; x++)
             {
-
-                if (current.neighbours[x].walkable)
+                if (current.neighbours[x].walkable == false | closedSet.Contains(current.neighbours[x]))
                 {
+                    continue;
+                }
+
+                int newCostNeighbour = current.gCost + GetDist(current, current.neighbours[x]) + current.weight;
+
+                if (newCostNeighbour < current.neighbours[x].gCost || !openSet.Contains(current.neighbours[x]))
+                {
+                    current.neighbours[x].gCost = newCostNeighbour;
+                    current.neighbours[x].hCost = GetDist(current.neighbours[x], end);
                     current.neighbours[x].parents[0] = current;
-                    current.neighbours[x].gCost = Mathf.Abs(current.neighbours[x].Position.x - end.Position.x)
-                        + Mathf.Abs(current.neighbours[x].Position.y - end.Position.y);
-                    current.neighbours[x].fCost = current.neighbours[x].weight + current.fCost;
-
-                    openSet.Add(current.neighbours[x]);
-
-                    openSet = openSet.OrderBy(node => node.fCost).ToList<PathfindingNode>();
+                    
+                    if (!openSet.Contains(current.neighbours[x]))
+                    {
+                        openSet.Add(current.neighbours[x]);
+                    }
                 }
             }
         }
@@ -49,10 +72,15 @@ public class PathFinder
             }
             path.Reverse();
         }
-        else
-        {
-            //no path
-            path = null;
-        }
+    }
+
+    int GetDist(PathfindingNode pn1, PathfindingNode pn2)
+    {
+        int dstX = Mathf.RoundToInt(Mathf.Abs(pn1.Position.x - pn2.Position.x));
+        int dstY = Mathf.RoundToInt(Mathf.Abs(pn1.Position.y - pn2.Position.y));
+
+        if (dstX > dstY)
+            return 14 * dstY + 10 * (dstX - dstY);
+        return 14 * dstX + 10 * (dstY - dstX);
     }
 }
