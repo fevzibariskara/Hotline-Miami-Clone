@@ -7,7 +7,6 @@ using UnityEngine;
 public class PathfindingManager
 {
     static PathfindingManager me;
-    [SerializeField] int NumberOfThreads = 3;
     [SerializeField] float maxNeighbourDistance = 1f;
     Dictionary<int, Dictionary<int, NodeList>> allNodes;
     GameObject DebugParent;
@@ -38,8 +37,11 @@ public class PathfindingManager
         pn.walkable = true;
         pn.weight = 1;
 
+        pn.gCost = new int[PathFinderManager.Me().NumberOfThreads];
+        pn.hCost = new int[PathFinderManager.Me().NumberOfThreads];
+
         pn.neighbours = new List<PathfindingNode>();
-        pn.parents = new PathfindingNode[NumberOfThreads];
+        pn.parents = new PathfindingNode[PathFinderManager.Me().NumberOfThreads];
 
         AddToAllNodes(coordPos.x, coordPos.y, pn);
     }
@@ -196,16 +198,14 @@ public class PathfindingNode
 {
     public Vector3 Position;
     public List<PathfindingNode> neighbours;
-    public int gCost, hCost, weight;
+    public int[] gCost, hCost;
+    public int weight;
     public PathfindingNode[] parents;
     public bool walkable;
 
-    public int fCost
+    public int GetFCost(int threadID)
     {
-        get
-        {
-            return gCost + hCost;
-        }
+        return gCost[threadID] + hCost[threadID];
     }
 }
 

@@ -470,6 +470,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   test: {fileID: 25579218}
+  test2: {fileID: 1511511343}
 --- !u!1 &667699370
 GameObject:
   m_ObjectHideFlags: 0

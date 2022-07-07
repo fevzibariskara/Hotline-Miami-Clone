@@ -31,23 +31,32 @@ public class DebugHelpers : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.L))
         {
-            PathFinder pf = new PathFinder();
-            pf.GetPath(PathfindingManager.Me().GetNearestNodeToPosition(test.transform.position), 
-                PathfindingManager.Me().GetNearestNodeToPosition(test2.transform.position));
+            pf = new PathFinder();
+            pf.GetMultiThreadedPath(PathfindingManager.Me().GetNearestNodeToPosition(test.transform.position), 
+                PathfindingManager.Me().GetNearestNodeToPosition(test2.transform.position));            
+        }
 
-            if (pf.path.Count == 0)
+        if (pf != null)
+        {
+            if (pf.isPathDone)
             {
-                Debug.LogError("COULD NOT GET PATH");
-            }
-            else
-            {
-                for (int x = 0; x < pf.path.Count; x++)
+                Debug.Log("PATH DONE");
+                if (pf.path.Count == 0)
                 {
-                    GameObject g = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
-                    g.transform.position = pf.path[x].Position;
-
-                    g.name = "PATH NODE " + x;
+                    Debug.LogError("COULD NOT GET PATH");
                 }
+                else
+                {
+                    Debug.Log("PATH SI " + pf.path.Count);
+                    for (int x = 0; x < pf.path.Count; x++)
+                    {
+                        GameObject g = GameObject.CreatePrimitive(PrimitiveType.Cylinder);
+                        g.transform.position = pf.path[x].Position;
+
+                        g.name = "PATH NODE " + x;
+                    }
+                }
+                pf.isPathDone = false;
             }
         }
     }

@@ -5,9 +5,46 @@ using System.Linq;
 
 public class PathFinder
 {
+    PathfindingNode startNode, endNode;
+
+    public bool isPathDone = false;
+    int threadID = -1;
+
     public List<PathfindingNode> path = new List<PathfindingNode>();
 
-    public void GetPath(PathfindingNode start, PathfindingNode end)
+    public void GetMultiThreadedPath(PathfindingNode start, PathfindingNode end)
+    {
+        if (start == null || end == null)
+        {
+            return;
+        }
+        isPathDone = false;
+
+        startNode = start;
+        endNode = end;
+
+        Debug.Log("REQUESTING THREAD FOR PATH");
+
+        PathFinderManager.Me().RequestThread(this);
+    }
+
+    public void SetThreadID(int i)
+    {
+        Debug.Log("SET ID TO " + i);
+        threadID = i;
+    }
+
+    public int GetID()
+    {
+        return threadID;
+    }
+
+    public void OnThreadAvailable()
+    {
+        GetPath(startNode, endNode);
+    }
+
+    void GetPath(PathfindingNode start, PathfindingNode end)
     {
         path = new List<PathfindingNode>();
 
@@ -23,9 +60,9 @@ public class PathFinder
 
             for (int i = 1; i < openSet.Count; i++)
             {
-                if (openSet[i].fCost <= current.fCost)
+                if (openSet[i].GetFCost(threadID) <= current.GetFCost(threadID))
                 {
-                    if (openSet[i].hCost < current.hCost)
+                    if (openSet[i].hCost[threadID] < current.hCost[threadID])
                     {
                         current = openSet[i];
                     }
@@ -46,13 +83,13 @@ public class PathFinder
                     continue;
                 }
 
-                int newCostNeighbour = current.gCost + GetDist(current, current.neighbours[x]) + current.weight;
+                int newCostNeighbour = current.gCost[threadID] + GetDist(current, current.neighbours[x]) + current.weight;
 
-                if (newCostNeighbour < current.neighbours[x].gCost || !openSet.Contains(current.neighbours[x]))
+                if (newCostNeighbour < current.neighbours[x].gCost[threadID] || !openSet.Contains(current.neighbours[x]))
                 {
-                    current.neighbours[x].gCost = newCostNeighbour;
-                    current.neighbours[x].hCost = GetDist(current.neighbours[x], end);
-                    current.neighbours[x].parents[0] = current;
+                    current.neighbours[x].gCost[threadID] = newCostNeighbour;
+                    current.neighbours[x].hCost[threadID] = GetDist(current.neighbours[x], end);
+                    current.neighbours[x].parents[threadID] = current;
                     
                     if (!openSet.Contains(current.neighbours[x]))
                     {
@@ -68,10 +105,12 @@ public class PathFinder
             while (current != start)
             {
                 path.Add(current);
-                current = current.parents[0];
+                current = current.parents[threadID];
             }
             path.Reverse();
         }
+        isPathDone = true;
+        PathFinderManager.Me().OnPathFinish(this);
     }
 
     int GetDist(PathfindingNode pn1, PathfindingNode pn2)
