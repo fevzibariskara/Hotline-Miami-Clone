@@ -10,7 +10,26 @@ public class Interactable_Door : Interactables
 
     public override bool CanInteract(GameObject toInteract)
     {
-        return true;
+        if (Vector2.Distance(toInteract.transform.position, this.transform.position) > 2f)
+        {
+            return false;
+        }
+
+        Vector2 dir = toInteract.transform.position - this.transform.position;
+        dir = dir.normalized;
+
+        RaycastHit2D hit = Physics2D.Raycast(this.transform.position, dir, Mathf.Infinity);
+        Debug.DrawRay(this.transform.position, dir * Mathf.Infinity, Color.magenta, 10f);
+
+        if (hit.collider != null)
+        {
+            if (hit.collider.transform.root.gameObject == toInteract)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void Update()

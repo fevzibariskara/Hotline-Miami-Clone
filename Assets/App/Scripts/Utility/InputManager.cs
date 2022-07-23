@@ -26,6 +26,7 @@ public class InputManager : MonoBehaviour
         PickupItem();
         DropItem();
         Attack();
+        InteractablesInputCheck();
     }
 
     private void FixedUpdate()
@@ -95,6 +96,14 @@ public class InputManager : MonoBehaviour
             {
                 playerInv.GetAllItems()[x].UnequipItem();
             }
+        }
+    }
+
+    void InteractablesInputCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.E))
+        {
+            InteractablesManager.Me().QueryInteractables(this.gameObject);
         }
     }
 
