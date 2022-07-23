@@ -7,6 +7,8 @@ public class ObjectMover : MonoBehaviour
 {
     Rigidbody2D rigidbody;
     PersonAnimationController pac;
+    AreaTransition lastTransitionUsed;
+
     [SerializeField] float maxVelocity = 5f, acceleration = 5f;
 
     private void Awake()
@@ -48,6 +50,23 @@ public class ObjectMover : MonoBehaviour
         Vector3 pos = pointToFace - this.transform.position;
         float rotZ = Mathf.Atan2(pos.x, pos.y) * Mathf.Rad2Deg;
         transform.rotation = Quaternion.Euler(0.0f, 0f, rotZ * -1);
+    }
+
+    public void SetLastTransition(AreaTransition at)
+    {
+        lastTransitionUsed = at;
+        StartCoroutine(ClearLastTransitionUsed());
+    }
+
+    IEnumerator ClearLastTransitionUsed()
+    {
+        yield return new WaitForSeconds(1f);
+        lastTransitionUsed = null;
+    }
+
+    public AreaTransition GetLastTransition()
+    {
+        return lastTransitionUsed;
     }
 
 }
