@@ -47,10 +47,19 @@ public class PathFinderManager
         }
         else
         {
-            if (!findersWaiting.Contains(pf))
-            {
-                findersWaiting.Add(pf);
-            }
+            AddToFindersWaiting(pf);
+        }
+    }
+
+    void AddToFindersWaiting(PathFinder pf)
+    {
+        if (findersWaiting == null)
+        {
+            findersWaiting = new List<PathFinder>();
+        }
+        if (!findersWaiting.Contains(pf))
+        {
+            findersWaiting.Add(pf);
         }
     }
 

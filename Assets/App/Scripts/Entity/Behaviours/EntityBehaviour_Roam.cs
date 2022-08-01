@@ -25,8 +25,12 @@ public class EntityBehaviour_Roam : EntityBehaviour
             toMove = GetEntityPerforming().GetComponent<ObjectMover>();
         }
 
-        toMove.FacePoint(pointsToRoam[index].position);
-        toMove.MoveObjectTowardsPoint(pointsToRoam[index].position);
+        toMove.GetPathToPoint(pointsToRoam[index].position);
+        toMove.FollowPath();
+
+        //toMove.FacePoint(pointsToRoam[index].position);
+        //toMove.MoveObjectTowardsPoint(pointsToRoam[index].position);
+
         //toMove.MoveObject(transform.up);
 
         if (IsEntityAtPoint())

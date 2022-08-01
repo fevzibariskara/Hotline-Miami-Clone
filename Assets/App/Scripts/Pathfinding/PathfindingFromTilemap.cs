@@ -43,6 +43,5 @@ public class PathfindingFromTilemap : MonoBehaviour
             }
         }
         PathfindingManager.Me().GetNodeNeighbours();
-        PathfindingManager.Me().GenerateDebugDisplay();
     }
 }

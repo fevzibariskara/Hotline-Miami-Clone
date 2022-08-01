@@ -7,13 +7,18 @@ public class PathFinder
 {
     PathfindingNode startNode, endNode;
 
-    public bool isPathDone = false;
+    public bool isPathDone = false, RequestedPath = false;
     int threadID = -1;
 
     public List<PathfindingNode> path = new List<PathfindingNode>();
 
     public void GetMultiThreadedPath(PathfindingNode start, PathfindingNode end)
     {
+        if (RequestedPath && end != endNode)
+        {
+            return;
+        }
+
         if (start == null || end == null)
         {
             return;
@@ -22,6 +27,8 @@ public class PathFinder
 
         startNode = start;
         endNode = end;
+
+        RequestedPath = true;
 
         Debug.Log("REQUESTING THREAD FOR PATH");
 
@@ -101,6 +108,10 @@ public class PathFinder
 
         if (current == end)
         {
+            if (path.Count > 0)
+            {
+                path.Clear();
+            }
             //successful path
             while (current != start)
             {
@@ -122,4 +133,12 @@ public class PathFinder
             return 14 * dstY + 10 * (dstX - dstY);
         return 14 * dstX + 10 * (dstY - dstX);
     }
+
+    public void ClearPathFinder()
+    {
+        path.Clear();
+        isPathDone = false;
+        RequestedPath = false;
+    }
+
 }
