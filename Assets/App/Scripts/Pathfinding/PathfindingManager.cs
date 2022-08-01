@@ -25,17 +25,17 @@ public class PathfindingManager
     public void Init()
     {
         allNodes = new Dictionary<int, Dictionary<int, NodeList>>();
-        GenerateGrid();
+        //GenerateGrid();
     }
 
-    void GenerateNode(Vector3 position)
+    public void GenerateNode(Vector3 position, bool walkable, int weight = 1)
     {
         PathfindingNode pn = new PathfindingNode();
         pn.Position = position;
         Vector3Int coordPos = new Vector3Int(Mathf.RoundToInt(position.x), Mathf.RoundToInt(position.y), Mathf.RoundToInt(position.z));
 
-        pn.walkable = true;
-        pn.weight = 1;
+        pn.walkable = walkable;
+        pn.weight = weight;
 
         pn.gCost = new int[PathFinderManager.Me().NumberOfThreads];
         pn.hCost = new int[PathFinderManager.Me().NumberOfThreads];
@@ -46,7 +46,7 @@ public class PathfindingManager
         AddToAllNodes(coordPos.x, coordPos.y, pn);
     }
 
-    void AddToAllNodes(int x, int y, PathfindingNode pn)
+    public void AddToAllNodes(int x, int y, PathfindingNode pn)
     {
         if (!allNodes.ContainsKey(x))
         {
@@ -62,13 +62,13 @@ public class PathfindingManager
 
     void GenerateGrid()
     {
-        for (float x = -50f; x < 0f; x += .5f)
-        {
-            for (float y = -50f; y < 0f; y += .5f)
-            {
-                GenerateNode(new Vector3(x, y, 0));
-            }
-        }
+        //for (float x = -50f; x < 0f; x += .5f)
+        //{
+        //    for (float y = -50f; y < 0f; y += .5f)
+        //    {
+        //        GenerateNode(new Vector3(x, y, 0));
+        //    }
+        //}
         GetNodeNeighbours();
     }
 
@@ -100,12 +100,7 @@ public class PathfindingManager
         g.transform.localScale = new Vector3(.25f, .25f, .25f);
         g.transform.parent = DebugParent.transform;
 
-        g.name = "NODE " + pn.Position + "|";
-
-        for (int x = 0; x < pn.neighbours.Count; x++)
-        {
-            g.name += pn.neighbours[x].Position + "|";
-        }
+        g.name = "NODE " + pn.walkable + "|";
     }
 
     List<PathfindingNode> GetNodes(int x, int y)
@@ -127,7 +122,7 @@ public class PathfindingManager
         return retVal;
     }
 
-    void GetNodeNeighbours()
+    public void GetNodeNeighbours()
     {
         foreach (KeyValuePair<int, Dictionary<int, NodeList>> kvp in allNodes)
         {
