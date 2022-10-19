@@ -23,6 +23,8 @@ public class PathFinder
         {
             return;
         }
+        path.Clear();
+
         isPathDone = false;
 
         startNode = start;
@@ -108,10 +110,10 @@ public class PathFinder
 
         if (current == end)
         {
-            if (path.Count > 0)
-            {
-                path.Clear();
-            }
+            //if (path.Count > 0)
+            //{
+            //    path.Clear();
+            //}
             //successful path
             while (current != start)
             {
